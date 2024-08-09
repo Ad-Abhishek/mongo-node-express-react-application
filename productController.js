@@ -33,6 +33,8 @@ const createProduct = async (req, res) => {
   const newProduct = new Product({
     name: req.body.name,
     price: req.body.price,
+    color: req.body.color,
+    stock: req.body.stock,
   });
   try {
     const savedProduct = await newProduct.save();
