@@ -1,3 +1,4 @@
+const { validationResult } = require('express-validator');
 let Product = require('./productModel');
 
 // Get all produts
@@ -21,7 +22,7 @@ const getProductById = async (req, res) => {
         message: 'Product not found',
       });
     res.json(product);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       message: err.message,
     });
@@ -30,29 +31,44 @@ const getProductById = async (req, res) => {
 
 // Create a new produt
 const createProduct = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array(),
+    });
+  }
+
   const newProduct = new Product({
     name: req.body.name,
     price: req.body.price,
     color: req.body.color,
     stock: req.body.stock,
   });
+
   try {
     const savedProduct = await newProduct.save();
     res.status(201).json(savedProduct);
-  } catch (error) {
+  } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
 
 // Update a product
 const updateProduct = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.send(400).json({
+      errors: errors.array(),
+    });
+  }
+
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
     res.status(200).json(product);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -71,7 +87,7 @@ const deleteProduct = async (req, res) => {
 };
 
 module.exports = {
-  getAllProducts,
+  getAllProducts, 
   getProductById,
   createProduct,
   updateProduct,
