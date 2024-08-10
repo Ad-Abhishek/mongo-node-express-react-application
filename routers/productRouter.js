@@ -1,10 +1,8 @@
-const express = require('express');
+import express from 'express';
+import { body } from 'express-validator';
+import productController from '../controllers/productController.js';
 
-const { body } = require('express-validator');
-
-const router = express.Router();
-
-const productController = require('./productController');
+const productRouter = express.Router();
 
 // Validation rules
 const productValidationRules = [
@@ -35,18 +33,18 @@ const productValidationRules = [
 ];
 
 // Routes for product CRUD operations
-router.get('/products', productController.getAllProducts);
-router.get('/products/:id', productController.getProductById);
-router.post(
+productRouter.get('/products', productController.getAllProducts);
+productRouter.get('/products/:id', productController.getProductById);
+productRouter.post(
   '/products/',
   productValidationRules,
   productController.createProduct
 );
-router.put(
+productRouter.put(
   '/products/:id',
   productValidationRules,
   productController.updateProduct
 );
-router.delete('/products/:id', productController.deleteProduct);
+productRouter.delete('/products/:id', productController.deleteProduct);
 
-module.exports = router;
+export default productRouter;

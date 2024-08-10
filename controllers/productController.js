@@ -1,10 +1,10 @@
-const { validationResult } = require('express-validator');
-let Product = require('./productModel');
+import { validationResult } from 'express-validator';
+import Product from '../schemas/productModel.js';
 
 // Get all produts
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find(); // Returns a list of products
     res.json(products);
   } catch (err) {
     res.status(500).json({
@@ -16,15 +16,19 @@ const getAllProducts = async (req, res) => {
 // Get a product by ID
 const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id); // Returns an object
     if (!product)
       return res.status(404).json({
+        status: 'FAILED',
         message: 'Product not found',
+        data: null,
       });
     res.json(product);
   } catch (err) {
     res.status(500).json({
+      status: 'FAILED',
       message: err.message,
+      data: null,
     });
   }
 };
@@ -38,18 +42,26 @@ const createProduct = async (req, res) => {
     });
   }
 
+  let { name, price, color, stock } = req.body;
   const newProduct = new Product({
-    name: req.body.name,
-    price: req.body.price,
-    color: req.body.color,
-    stock: req.body.stock,
+    name,
+    price,
+    color,
+    stock,
   });
 
   try {
-    const savedProduct = await newProduct.save();
-    res.status(201).json(savedProduct);
+    const savedProduct = await newProduct.save(); // Returns a newly added product
+    res.status(201).json({
+      status: 'SUCCESS',
+      message: 'Product created successfully!',
+      data: savedProduct,
+    });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({
+      status: 'FAILED',
+      message: err.message,
+    });
   }
 };
 
@@ -66,9 +78,17 @@ const updateProduct = async (req, res) => {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    res.status(200).json(product);
+    res.status(200).json({
+      status: 'SUCCESS',
+      message: 'Product updated successfully!',
+      data: product,
+    });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({
+      status: 'FAILED',
+      message: err.message,
+      data: null,
+    });
   }
 };
 
@@ -79,15 +99,21 @@ const deleteProduct = async (req, res) => {
     if (!product) return res.status(404).json({ message: 'Product not found' });
 
     res.status(200).json({
+      status: 'SUCCESS',
       message: 'Product Deleted Successfully!',
+      data: null,
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      status: 'FAILED',
+      message: err.message,
+      data: null,
+    });
   }
 };
 
-module.exports = {
-  getAllProducts, 
+export default {
+  getAllProducts,
   getProductById,
   createProduct,
   updateProduct,
