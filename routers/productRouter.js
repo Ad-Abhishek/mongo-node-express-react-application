@@ -40,6 +40,15 @@ const productRouter = express.Router();
  *       500:
  *         description: Server error
  */
+
+/**
+ * @usage : Get all products
+ * @url : http://localhost:8080/products
+ * @params : none
+ * @method : GET
+ * @access : PUBLIC
+ */
+
 productRouter.get('/products', productController.getAllProducts);
 
 /**
@@ -77,6 +86,16 @@ productRouter.get('/products', productController.getAllProducts);
  *       500:
  *         description: Server error
  */
+
+/**
+ * @usage : Get a product by ID
+ * @url : http://localhost:8080/products/:id
+ * @urlparams : id
+ * @params : none
+ * @method : GET
+ * @access : PUBLIC
+ */
+
 productRouter.get('/products/:id', productController.getProductById);
 
 /**
@@ -108,6 +127,15 @@ productRouter.get('/products/:id', productController.getProductById);
  *       500:
  *         description: Server error
  */
+
+/**
+ * @usage : Create a product
+ * @url : http://localhost:8080/products
+ * @params : name, price, color, stock
+ * @method : POST
+ * @access : PUBLIC
+ */
+
 productRouter.post(
   '/products/',
   productReqValidator,
@@ -151,6 +179,16 @@ productRouter.post(
  *       500:
  *         description: Server error
  */
+
+/**
+ * @usage : Update a product by ID
+ * @url : http://localhost:8080/products/:id
+ * @urlparams : id
+ * @params : name, price, color, stock
+ * @method : PUT
+ * @access : PUBLIC
+ */
+
 productRouter.put(
   '/products/:id',
   productReqValidator,
@@ -177,6 +215,16 @@ productRouter.put(
  *       500:
  *         description: Server error
  */
+
+/**
+ * @usage : Delete a product by ID
+ * @url : http://localhost:8080/products/:id
+ * @urlparams : id
+ * @params : none
+ * @method : DELETE
+ * @access : PUBLIC
+ */
+
 productRouter.delete('/products/:id', productController.deleteProduct);
 
 export default productRouter;
