@@ -6,12 +6,10 @@ import swaggerUI from 'swagger-ui-express';
 import swaggerSpec from './config/docs/swagger.js';
 import productRouter from './routers/productRouter.js';
 
-dotenv.config();
-
 const app = express();
 
-app.use(cors());
-app.use(express.json()); //To parse JSON request bodies
+dotenv.config();
+const PORT = process.env.PORT;
 
 // Connect to MongoDB
 mongoose
@@ -24,19 +22,20 @@ mongoose
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('Could not connect to MongoDB:', err));
 
+app.use(cors());
+app.use(express.json()); //To parse JSON request bodies
+
 // Serve Swagger Documentation
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 // Use the product router
 app.use('', productRouter);
 
-const PORT = process.env.PORT;
-
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// Get JSON format swagger-doc
+// Get JSON format Swagger-doc
 app.get('/swagger.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
