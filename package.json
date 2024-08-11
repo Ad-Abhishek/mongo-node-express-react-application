@@ -1,7 +1,7 @@
 {
-  "name": "project01",
+  "name": "product-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "RESTful api for product resource",
   "main": "app.js",
   "type": "module",
   "scripts": {
@@ -10,7 +10,7 @@
     "dev": "nodemon app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Abhishek Adhikari",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
@@ -18,8 +18,10 @@
     "express": "^4.19.2",
     "express-validator": "^7.1.0",
     "mongoose": "^8.5.2",
-    "nodemon": "^3.1.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }
